@@ -9,14 +9,17 @@ void vTask1Function(void* pvParameters)
 		//ODR = output data register
 		GPIOA -> ODR |= GPIO_ODR_ODR_5;
 		//otbitij sleep follows
-		for(int i=0; i<100000; i++); 
+		for(int i=0; i<; i++); 
+		vTaskDelay(1000);
 		GPIOA -> ODR &= ~GPIO_ODR_ODR_5;
-		for(int i=0; i<100000; i++); 
+		vTaskDelay(1000);
 	}
 }
 
-//map range 0x40000000,0x4000FFFF
+//map range 0x40000000, 0x400FFFFF
 int main(void) {
+	
+	//InitHardware();
 	//Init
 	//launch (taktirovanije) for global IO module, AHB = inner bus
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
@@ -26,4 +29,8 @@ int main(void) {
 	xTaskCreate(vTask1Function, "task1", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
 	
 	vTaskStartScheduler();
+	
+	while(1)
+	{
+	}	
 }
